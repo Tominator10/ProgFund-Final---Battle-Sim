@@ -1,0 +1,104 @@
+PROBLEM STATEMENT
+  A program is required that will simulate a simple fight against an A.I opponent with the user's input being specific actions (attack, block, grab) that will then decide how one round plays out. After 5 rounds, a "battle report" will be generated which lists each round, what each player did, and how their actions interacted.
+
+Nouns: input actions, round, report
+
+Verbs: simulate, decide, generate, interacted
+
+
+
+DEFINING DIAGRAM
+
+Inputs: userAction (5 times)
+
+Processing: decide aiAction, add interaction to battleLog
+
+Outputs: battleLog
+
+
+
+SOLUTION ALGORITHM
+
+UpdateFight(userAct, enemyAct)
+  IF (attack,attack)
+    add "you both dealt damage" to report
+  ENDIF
+  IF (attack,grab)
+    add "you dealt damage" to report
+  ENDIF
+  IF (attack,block)
+    add "they blocked your attack" to report
+  ENDIF
+  IF (grab,attack)
+    add "they dealt damage to you" to report
+  ENDIF
+  IF (grab,grab)
+    add "you grab eachother" to report
+  ENDIF
+  IF (grab,block)
+    add "you grab them" to report
+  ENDIF
+  IF (block,attack)
+    add "you block their attack" to report
+  ENDIF
+  IF (block,grab)
+    add "they grab you" to report
+  ENDIF
+  IF (block,block)
+    add "you both block" to report
+  ENDIF
+END
+
+DecideAiAction()
+  initialise random as random between 0 and 2
+  SWITCH (random)
+    case 0:
+      return "attack"
+    case 1:
+      return "grab"
+    case 2:
+      return "block"
+END
+
+Main
+  initialise userAction as ""
+  initialise aiAction as ""
+  initialise popUp as "Welcome to the fight!"
+  initialise output as ""
+  initialise report as ""
+
+  FOR 5 times
+    prompt for userAction with popUp + "<br>please enter attack, grab, or block"
+    run UpdateFight with (userAction, DecideAiAction())
+  ENDFOR
+
+  add winner to report
+
+  display report
+
+END
+
+
+TEST CASES
+Inputs: action (5 times)
+
+Test 1:
+  Inputs: attack, attack, attack, attack, bloop
+
+  Expected Outputs: catches the error and asks for another input
+
+  Outputs: asks the user to reinput the fifth action
+
+Test 2:
+  Inputs: block, block, grab, attack, block
+
+  Expected Outputs: fight plays out and shows battle report
+
+  Outputs: fight plays out and shows battle report, most likely a loss
+
+Test 3:
+  Inputs: attack, attack, attack, attack, attack
+
+  Expected Outputs: fight plays out and shows battle report
+
+  Outputs: fight plays out and shows battle report, most likely to win
